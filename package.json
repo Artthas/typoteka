@@ -1,0 +1,25 @@
+{
+  "name": "typoteka",
+  "version": "1.0.0",
+  "description": "Типотека",
+  "main": "./src/service/service.js",
+  "scripts": {
+    "start": "node ./src/service/service.js",
+    "test": "npm run eslint",
+    "eslint": "eslint --ext .js src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Artthas/typoteka.git"
+  },
+  "author": "Alexander Gnetov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Artthas/typoteka/issues"
+  },
+  "homepage": "https://github.com/Artthas/typoteka#readme",
+  "devDependencies": {
+    "eslint": "8.16.0",
+    "eslint-config-htmlacademy": "0.6.0"
+  }
+}
