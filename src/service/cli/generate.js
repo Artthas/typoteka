@@ -1,7 +1,10 @@
 'use strict';
 
-const fs = require(`fs`);
+const chalk = require(`chalk`);
+const fs = require(`fs`).promises;
 const {getRandomInt, shuffle} = require(`../../utils`);
+
+const {ExitCode} = require(`../../constants`);
 
 const DEFAULT_COUNT = 1;
 const FILE_NAME = `mocks.json`;
@@ -58,36 +61,38 @@ const CATEGORIES = [
 
 const generateDate = () => {
   const startDate = new Date();
-  startDate.setMonth(startDate.getMonth() - 3);
   const nowDate = new Date();
-  return new Date(startDate.getTime() + Math.random() * (nowDate.getTime() - startDate.getTime()));
+  startDate.setMonth(startDate.getMonth() - 3);
+  return new Date(getRandomInt(startDate.getTime(), nowDate.getTime()));
 }
 
 const generatePublications = (count) => (
   Array(count).fill({}).map(() => ({
     title: TITLES[getRandomInt(0, TITLES.length - 1)],
     createdDate: generateDate(),
-    announce: shuffle(SENTENCES).slice(1, 5).join(` `),
-    fullText: shuffle(SENTENCES).slice(1, 10).join(` `),
-    сategory: shuffle(CATEGORIES).slice(1, getRandomInt(2, CATEGORIES.length - 1)),
+    announce: shuffle(SENTENCES).slice(0, 5).join(` `),
+    fullText: shuffle(SENTENCES).slice(0, 10).join(` `),
+    сategory: shuffle(CATEGORIES).slice(0, getRandomInt(2, CATEGORIES.length - 1)),
   }))
 );
 
 module.exports = {
   name: `--generate`,
-  run(args) {
+  async run(args) {
     const [count] = args;
     const countPublication = Number.parseInt(count, 10) || DEFAULT_COUNT;
     if (countPublication > 1000) {
-      console.error(`Не больше 1000 публикаций`);
-    } else {
-      const content = JSON.stringify(generatePublications(countPublication));
-      fs.writeFile(FILE_NAME, content, (err) => {
-        if (err) {
-          return console.error(`Can't write data to file...`);
-        }
-        return console.info(`Operation success. File created.`);
-      });
+      console.error(chalk.red(`Не больше 1000 публикаций`));
+      process.exit(ExitCode.error);
+    }
+    const content = JSON.stringify(generatePublications(countPublication));
+    try {
+      await fs.writeFile(FILE_NAME, content);
+      console.info(chalk.green(`Operation success. File created.`));
+      process.exit(ExitCode.success);
+    } catch (err) {
+      console.error(chalk.red(`Can't write data to file...`));
+      process.exit(ExitCode.error);
     }
   }
 };
