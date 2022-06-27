@@ -28,7 +28,7 @@ const generateDate = () => {
   const nowDate = new Date();
   startDate.setMonth(startDate.getMonth() - 3);
   return new Date(getRandomInt(startDate.getTime(), nowDate.getTime()));
-}
+};
 
 const generatePublications = (count, titles, categories, sentences) => (
   Array(count).fill({}).map(() => ({
@@ -56,7 +56,7 @@ module.exports = {
     }
 
     const content = JSON.stringify(generatePublications(countPublication, titles, categories, sentences));
-    
+
     try {
       await fs.writeFile(FILE_NAME, content);
       console.info(chalk.green(`Operation success. File created.`));
