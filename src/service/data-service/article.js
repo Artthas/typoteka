@@ -10,7 +10,7 @@ class ArticleService {
 
   create(article) {
     const newArticle = Object
-      .assign({id: customAlphabet('1234567890', MAX_ID_LENGTH)(), comments: []}, article);
+      .assign({id: customAlphabet(`1234567890`, MAX_ID_LENGTH)(), comments: []}, article);
 
     this._articles.push(newArticle);
     return newArticle;
@@ -38,7 +38,11 @@ class ArticleService {
   update(id, article) {
     const oldArticle = this._articles.find((item) => item.id === id);
 
-    return Object.assign(oldArticle, article);
+    if (oldArticle) {
+      return Object.assign(oldArticle, article);
+    }
+
+    return oldArticle;
   }
 }
 

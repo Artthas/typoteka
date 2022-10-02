@@ -6,7 +6,10 @@ class CategoryService {
   }
 
   findAll() {
-    const categories = this._articles.map((item) => item.сategory);
+    const categories = [];
+    for (const article of this._articles) {
+      categories.push(...article.category);
+    }
     const categoriesSet = new Set(categories);
     return [...categoriesSet];
   }
