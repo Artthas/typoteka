@@ -2,7 +2,7 @@
 
 const {customAlphabet} = require(`nanoid`);
 
-const {ExitCode, MAX_ID_LENGTH} = require(`../../constants`);
+const {MAX_ID_LENGTH} = require(`../../constants`);
 
 class CommentService {
   constructor(articles) {
@@ -12,7 +12,7 @@ class CommentService {
   create(articleId, comment) {
     const article = this._articles.find((item) => item.id === articleId);
 
-    const newComment = {id: customAlphabet('1234567890', MAX_ID_LENGTH)(), ...comment};
+    const newComment = {id: customAlphabet(`1234567890`, MAX_ID_LENGTH)(), ...comment};
 
     article.comments.push(newComment);
     return newComment;

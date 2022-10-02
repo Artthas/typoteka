@@ -6,7 +6,7 @@ class SearchService {
   }
 
   async findAll(searchText) {
-    const searchedArticles = this._articles.filter((item) => item.title === searchText);
+    const searchedArticles = this._articles.filter((item) => item.title.includes(searchText));
     return searchedArticles;
   }
 

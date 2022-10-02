@@ -12,5 +12,7 @@ module.exports = (service) => async (req, res, next) => {
       .send(`Offer with ${articleId} not found`);
   }
 
+  res.locals.article = article;
+
   return next();
 };
