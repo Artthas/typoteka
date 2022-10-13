@@ -11,6 +11,7 @@ const FILE_SENTENCES_PATH = `./data/sentences.txt`;
 const FILE_TITLES_PATH = `./data/titles.txt`;
 const FILE_CATEGORIES_PATH = `./data/categories.txt`;
 const FILE_COMMENTS_PATH = `./data/comments.txt`;
+const FILE_USERNAMES_PATH = `./data/user-names.txt`;
 
 const MAX_COMMENTS = 4;
 const DEFAULT_COUNT = 1;
@@ -33,16 +34,19 @@ const generateDate = () => {
   return new Date(getRandomInt(startDate.getTime(), nowDate.getTime()));
 };
 
-const generateComments = (count, comments) => (
+const generateComments = (count, comments, userNames) => (
   Array(count).fill({}).map(() => ({
     id: customAlphabet(`1234567890`, MAX_ID_LENGTH)(),
+    userId: customAlphabet(`123`, 1)(),
+    userName: userNames[getRandomInt(0, userNames.length - 1)],
+    createdDate: generateDate(),
     text: shuffle(comments)
       .slice(0, getRandomInt(1, 3))
       .join(` `),
   }))
 );
 
-const generateArticles = (count, titles, categories, sentences, comments) => (
+const generateArticles = (count, titles, categories, sentences, comments, userNames) => (
   Array(count).fill({}).map(() => ({
     id: customAlphabet(`1234567890`, MAX_ID_LENGTH)(),
     title: titles[getRandomInt(0, titles.length - 1)],
@@ -50,7 +54,7 @@ const generateArticles = (count, titles, categories, sentences, comments) => (
     announce: shuffle(sentences).slice(0, 5).join(` `),
     fullText: shuffle(sentences).slice(0, 10).join(` `),
     category: shuffle(categories).slice(0, getRandomInt(2, categories.length - 1)),
-    comments: generateComments(getRandomInt(1, MAX_COMMENTS), comments),
+    comments: generateComments(getRandomInt(1, MAX_COMMENTS), comments, userNames),
   }))
 );
 
@@ -61,6 +65,7 @@ module.exports = {
     const titles = await readContent(FILE_TITLES_PATH);
     const categories = await readContent(FILE_CATEGORIES_PATH);
     const comments = await readContent(FILE_COMMENTS_PATH);
+    const userNames = await readContent(FILE_USERNAMES_PATH);
 
     const [count] = args;
     const countArticles = Number.parseInt(count, 10) || DEFAULT_COUNT;
@@ -70,7 +75,7 @@ module.exports = {
       process.exit(ExitCode.ERROR);
     }
 
-    const content = JSON.stringify(generateArticles(countArticles, titles, categories, sentences, comments));
+    const content = JSON.stringify(generateArticles(countArticles, titles, categories, sentences, comments, userNames));
 
     try {
       await fs.writeFile(FILE_NAME, content);

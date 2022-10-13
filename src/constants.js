@@ -23,6 +23,18 @@ const HttpCode = {
   BAD_REQUEST: 400,
 };
 
+const HttpMethod = {
+  GET: `GET`,
+  POST: `POST`,
+  PUT: `PUT`,
+  DELETE: `DELETE`
+};
+
+const Env = {
+  DEVELOPMENT: `development`,
+  PRODUCTION: `production`
+};
+
 module.exports = {
   DEFAULT_COMMAND,
   MAX_ID_LENGTH,
@@ -30,9 +42,6 @@ module.exports = {
   API_PREFIX,
   ExitCode,
   HttpCode,
-};
-
-module.exports.Env = {
-  DEVELOPMENT: `development`,
-  PRODUCTION: `production`
+  HttpMethod,
+  Env,
 };

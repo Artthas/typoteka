@@ -16,20 +16,6 @@ module.exports = (app, articleService, commentService) => {
     return res.status(HttpCode.OK).json(articles);
   });
 
-  route.get(`/mother`, (req, res) => {
-    let {counter = 0} = req.session;
-    counter++;
-
-    const welcomeText = `Это ваш первый визит на наш сайт.`;
-    const text = `Вы посетили наш сайт уже ${counter} раз`;
-
-    const message = counter === 1 ? welcomeText : text;
-    req.session.counter = counter;
-    console.log(req.session.counter);
-
-    res.send(message);
-  });
-
   route.get(`/:articleId`, articleExists(articleService), (req, res) => {
     const article = res.locals.article;
 

@@ -17,14 +17,17 @@ block content
           a(href='main.html') Пункт меню
         li.navigation__item
           a(href='main.html') Пункт меню
-    a.header__search.button.button--search(href='/search' aria-label='поиск по сайту')
-  main.main-page.main-page--padding
-    section.main-page__notes.notes
-      h1.notes__title Мои записи
-      ul.notes__list
-        each article of articles
-          li.notes__list-item
-            time.notes__item-time(datetime='#{article.createdDate}') #{article.createdDate}
-            a.notes__item-text(href='#') #{article.title}
-            button.notes__button.button.button--close-item(type='button')
-              span.visually-hidden Закрыть строку списка
+    a.header__search.button.button--search(href='#' aria-label='поиск по сайту')
+  main
+    section.search-page
+      .search-page__wrapper
+        h1 Поиск
+        .search.search-page__form
+          form(action='/search' method='get' autocomplete="off")
+            label
+              input(type='text' name='query' placeholder='Что ищем?' value='Путешествия')
+            button.search__button.button.button--transparent(type='submit') Найти
+          each article of results
+            div.search__result
+              time.search__date(datetime=article.createdDate) #{article.createdDate}
+              a.search__link #{article.title}
